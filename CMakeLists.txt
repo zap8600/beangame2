@@ -39,6 +39,13 @@ if (${PLATFORM} STREQUAL "Web")
     set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html")
 endif()
 
+# Link ws2_32 if on windows
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} "ws2_32")
+    target_link_libraries(server "winmm")
+    target_link_libraries(server "ws2_32")
+endif()
+
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework IOKit")

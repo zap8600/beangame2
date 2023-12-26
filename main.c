@@ -24,11 +24,16 @@
 
 LocalBean bean = { 0 };
 
+const char *serverIp = "172.233.208.111";
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+    if(argc >= 2) {
+        serverIp = argv[1];
+    } 
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
@@ -119,16 +124,21 @@ int main(int argc, char *argv[])
             // setup client
             if(!client) {
                 client = true;
-                Connect("172.233.208.111"); // bean game server dont ddos pls
+                Connect(serverIp); // bean game server dont ddos pls
             }
         }
+
+        if (IsKeyPressed(KEY_FOUR)) {
+            // rng new color, might as well add this
+            bean.beanColor = (Color){ (GetRandomValue(0, 255)), (GetRandomValue(0, 255)), (GetRandomValue(0, 255)), (GetRandomValue(0, 255)) };
+        }
         
-        if ((IsKeyPressed(KEY_FOUR)))
+        if ((IsKeyPressed(KEY_FIVE)))
         {
             EnableCursor();
         }
         
-        if ((IsKeyPressed(KEY_FIVE)))
+        if ((IsKeyPressed(KEY_SIX)))
         {
             DisableCursor();
         }
@@ -140,7 +150,7 @@ int main(int argc, char *argv[])
             UpdateLocalBean(&bean);
         } else if (connected) {
             // they hate us sadge
-            Connect("172.233.208.111");
+            Connect(serverIp);
             connected = false;
         }
         Update(GetTime(), GetFrameTime());
@@ -225,14 +235,15 @@ int main(int argc, char *argv[])
             EndMode3D();
 
             // Draw info boxes
-            DrawRectangle(5, 5, 330, 85, RED);
-            DrawRectangleLines(5, 5, 330, 85, BLUE);
+            DrawRectangle(5, 5, 330, 100, RED);
+            DrawRectangleLines(5, 5, 330, 100, BLUE);
 
             DrawText("Player controls:", 15, 15, 10, BLACK);
             DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl", 15, 30, 10, BLACK);
             DrawText("- Look around: arrow keys or mouse", 15, 45, 10, BLACK);
             DrawText("- Camera mode keys: 1, 2", 15, 60, 10, BLACK);
-            DrawText("- Connect to network: 3", 15, 75, 10, BLACK);
+            DrawText("- Generate a new color: 4", 15, 75, 10, BLACK);
+            DrawText("- Connect to network: 3", 15, 90, 10, BLACK);
 
         EndDrawing();
         //----------------------------------------------------------------------------------

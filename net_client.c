@@ -318,11 +318,8 @@ bool GetPlayerA(int id, unsigned char* a)
 	return true;
 }
 
-void UpdatePlayerListPos(Vector3 position, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+void UpdatePlayerList(Vector3 position, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     beans[LocalPlayerId].position = position;
-}
-
-void UpdatePlayerListCol(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
 	beans[LocalPlayerId].r = r;
     beans[LocalPlayerId].g = g;
     beans[LocalPlayerId].b = b;

@@ -132,6 +132,7 @@ void BeanPitch(LocalBean* bean, float angle, bool lockView, bool rotateAroundTar
 
 #define BEAN_MOVE_SPEED 0.09f
 #define CAMERA_MOUSE_SPEED 0.003f
+#define CAMERA_ROTATION 0.03f
 
 void UpdateLocalBean(LocalBean* bean) {
     Vector2 mousePositionDelta = GetMouseDelta();
@@ -140,6 +141,11 @@ void UpdateLocalBean(LocalBean* bean) {
     bool rotateAroundTarget = ((bean->cameraMode == CAMERA_THIRD_PERSON) || (bean->cameraMode == CAMERA_ORBITAL));
     bool lockView = ((bean->cameraMode == CAMERA_FREE) || (bean->cameraMode == CAMERA_FIRST_PERSON) || (bean->cameraMode == CAMERA_THIRD_PERSON) || (bean->cameraMode == CAMERA_ORBITAL));
     bool rotateUp = false;
+
+    if(IsKeyDown(KEY_DOWN)) BeanPitch(bean, -CAMERA_ROTATION, lockView, rotateAroundTarget, rotateUp);
+    if(IsKeyDown(KEY_UP)) BeanPitch(bean, CAMERA_ROTATION, lockView, rotateAroundTarget, rotateUp);
+    if(IsKeyDown(KEY_RIGHT)) BeanYaw(bean, -CAMERA_ROTATION, rotateAroundTarget);
+    if(IsKeyDown(KEY_LEFT)) BeanYaw(bean, -CAMERA_ROTATION, rotateAroundTarget);
 
     BeanYaw(bean, -mousePositionDelta.x*CAMERA_MOUSE_SPEED, rotateAroundTarget);
     BeanPitch(bean, -mousePositionDelta.y*CAMERA_MOUSE_SPEED, lockView, rotateAroundTarget, rotateUp);
