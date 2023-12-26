@@ -6,6 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Dependencies
 set(RAYLIB_VERSION 5.0)
+set(BUILD_SHARED_LIBS ON)
 find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
 if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   include(FetchContent)
@@ -26,6 +27,7 @@ endif()
 # Our Project
 
 add_executable(${PROJECT_NAME} main.c player.c net_common.c net_client.c)
+add_executable(server server.c net_common.c)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
