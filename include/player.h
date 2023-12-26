@@ -1,4 +1,4 @@
-#include "raylib.h"
+#include "raylib/raylib.h"
 #include "net/net_constants.h"
 
 // the player id of this client

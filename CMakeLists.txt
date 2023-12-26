@@ -27,7 +27,9 @@ endif()
 # Our Project
 
 add_executable(${PROJECT_NAME} main.c player.c net_common.c net_client.c)
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 add_executable(server server.c net_common.c)
+target_include_directories(server PRIVATE include)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 

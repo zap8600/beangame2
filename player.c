@@ -1,7 +1,7 @@
 #include "player.h"
-#include "raylib.h"
-#include "rcamera.h"
-#include "raymath.h"
+#include "raylib/raylib.h"
+#include "raylib/rcamera.h"
+#include "raylib/raymath.h"
 #include "net/net_client.h"
 #include <stdio.h>
 

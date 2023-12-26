@@ -13,9 +13,9 @@
 
 #include <stdio.h>
 
-#include "raylib.h"
-#include "rcamera.h"
-#include "raymath.h"
+#include "raylib/raylib.h"
+#include "raylib/rcamera.h"
+#include "raylib/raymath.h"
 #include "objects.h"
 #include "player.h"
 #include "net/net_client.h"

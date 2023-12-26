@@ -4,9 +4,10 @@
 #include <stdbool.h>
 
 // It is ok to include raymath, since raymath doesn't have any conflict with windows.h
-#include "raymath.h"
+#include "raylib/raymath.h"
 
-void UpdatePlayerList(Vector3 position, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+void UpdatePlayerListPos(Vector3 position);
+void UpdatePlayerListCol(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 void UpdateTheBigBean(Vector3 pos, Vector3 tar);
 
 void Connect(const char* serverAddress);

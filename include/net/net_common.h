@@ -29,7 +29,7 @@
 // common networking code for both server and client
 #pragma once
 
-#include "net_constants.h"
+#include "net/net_constants.h"
 
 // ensure we are using winsock2 on windows.
 #if (_WIN32_WINNT < 0x0601)

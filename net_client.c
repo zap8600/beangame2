@@ -110,10 +110,6 @@ void HandleUpdatePlayer(ENetPacket* packet, size_t* offset)
 	// update the last known position and movement
 	//printf("Bean %d update\n", remotePlayer);
 	beans[remotePlayer].position = ReadPosition(packet, offset);
-    beans[remotePlayer].r = ReadByte(packet, offset);
-    beans[remotePlayer].g = ReadByte(packet, offset);
-    beans[remotePlayer].b = ReadByte(packet, offset);
-    beans[remotePlayer].a = ReadByte(packet, offset);
 	beans[remotePlayer].updateTime = LastNow;
 
 	// in a more robust game this message would have a tick ID for what time this information was valid, and extra info about
@@ -135,18 +131,14 @@ void Update(double now, float deltaT)
 	if (LocalPlayerId >= 0 && now - LastInputSend > InputUpdateInterval)
 	{
 		// Pack up a buffer with the data we want to send
-		uint8_t buffer[17] = { 0 }; // 10 bytes for a 1 byte command number and two bytes for each X and Y value
+		uint8_t buffer[13] = { 0 }; // 10 bytes for a 1 byte command number and two bytes for each X and Y value
 		buffer[0] = (uint8_t)UpdateInput;   // this tells the server what kind of data to expect in this packet
 		*(float*)(buffer + 1) = (float)beans[LocalPlayerId].position.x;
 		*(float*)(buffer + 5) = (float)beans[LocalPlayerId].position.y;
 		*(float*)(buffer + 9) = (float)beans[LocalPlayerId].position.z;
-        *(uint8_t*)(buffer + 13) = (uint8_t)beans[LocalPlayerId].r;
-        *(uint8_t*)(buffer + 14) = (uint8_t)beans[LocalPlayerId].g;
-        *(uint8_t*)(buffer + 15) = (uint8_t)beans[LocalPlayerId].b;
-        *(uint8_t*)(buffer + 16) = (uint8_t)beans[LocalPlayerId].a;
 
         // copy this data into a packet provided by enet (TODO : add pack functions that write directly to the packet to avoid the copy)
-		ENetPacket* packet = enet_packet_create(buffer, 17, ENET_PACKET_FLAG_RELIABLE);
+		ENetPacket* packet = enet_packet_create(buffer, 13, ENET_PACKET_FLAG_RELIABLE);
 
 		// send the packet to the server
 		enet_peer_send(server, 0, packet);
@@ -326,9 +318,12 @@ bool GetPlayerA(int id, unsigned char* a)
 	return true;
 }
 
-void UpdatePlayerList(Vector3 position, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+void UpdatePlayerListPos(Vector3 position, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     beans[LocalPlayerId].position = position;
-    beans[LocalPlayerId].r = r;
+}
+
+void UpdatePlayerListCol(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+	beans[LocalPlayerId].r = r;
     beans[LocalPlayerId].g = g;
     beans[LocalPlayerId].b = b;
     beans[LocalPlayerId].a = a;
