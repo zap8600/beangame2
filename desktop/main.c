@@ -99,6 +99,37 @@ int main(int argc, char *argv[])
         }
         */
 
+        if(IsGamepadAvailable(0)) {
+            if(IsGamepadButtonPressed(0, GAMEPAD_AXIS_LEFT_TRIGGER)) {
+                if(bean.cameraMode != CAMERA_FIRST_PERSON) {
+                    bean.cameraMode = CAMERA_FIRST_PERSON;
+                    bean.up = (Vector3){ 0.0f, 1.0f, 0.0f }; // Reset roll
+                    UpdateCameraWithBean(&bean);
+                    //updateBeanCollide(&camera, cameraMode);
+                }
+            }
+
+            if(IsGamepadButtonPressed(0, GAMEPAD_AXIS_RIGHT_TRIGGER)) {
+                if(bean.cameraMode != CAMERA_THIRD_PERSON) {
+                    bean.cameraMode = CAMERA_THIRD_PERSON;
+                    bean.up = (Vector3){ 0.0f, 1.0f, 0.0f }; // Reset roll
+                    UpdateCameraWithBean(&bean);
+                    //updateBeanCollide(&camera, cameraMode);
+                }
+            }
+
+            if(IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_THUMB)) {
+                if(!client) {
+                    client = true;
+                    Connect(serverIp);
+                }
+            }
+
+            if(IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_THUMB)) {
+                bean.beanColor = (Color){ (GetRandomValue(0, 255)), (GetRandomValue(0, 255)), (GetRandomValue(0, 255)), (GetRandomValue(0, 255)) };
+            }
+        }
+
         if ((IsKeyPressed(KEY_ONE)))
         {
             if(bean.cameraMode != CAMERA_FIRST_PERSON) {

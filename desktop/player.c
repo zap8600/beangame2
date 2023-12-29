@@ -155,6 +155,17 @@ void UpdateLocalBean(LocalBean* bean) {
     if (IsKeyDown(KEY_S)) BeanMoveForward(bean, -BEAN_MOVE_SPEED, moveInWorldPlane);
     if (IsKeyDown(KEY_D)) BeanMoveRight(bean, BEAN_MOVE_SPEED, moveInWorldPlane);
 
+    if (IsGamepadAvailable(0)) {
+        // Gamepad controller support
+        BeanYaw(bean, -(GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_X) * 2)*CAMERA_MOUSE_SPEED, rotateAroundTarget);
+        BeanPitch(bean, -(GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_Y) * 2)*CAMERA_MOUSE_SPEED, lockView, rotateAroundTarget, rotateUp);
+        
+        if (GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) <= -0.25f) BeanMoveForward(bean, BEAN_MOVE_SPEED, moveInWorldPlane);
+        if (GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_X) <= -0.25f) BeanMoveRight(bean, -BEAN_MOVE_SPEED, moveInWorldPlane);
+        if (GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) >= 0.25f) BeanMoveForward(bean, -BEAN_MOVE_SPEED, moveInWorldPlane);
+        if (GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_X) >= 0.25f) BeanMoveRight(bean, BEAN_MOVE_SPEED, moveInWorldPlane);
+    }
+
     bean->beanCollide = (BoundingBox){
                         (Vector3){bean->transform.translation.x - 0.7f, bean->transform.translation.y - 1.7f, bean->transform.translation.z - 0.7f},
                         (Vector3){bean->transform.translation.x + 0.7f, bean->transform.translation.y + 0.9f, bean->transform.translation.z + 0.7f}};
