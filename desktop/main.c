@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     const int screenWidth = 800;
     const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "bean game proto - happy xmas yumbsy");
+    InitWindow(screenWidth, screenHeight, "Bean Game");
 
     // Define the camera to look into our 3d world (position, target, up vector)
     //bean.transform.translation = (Vector3){ 0.0f, 1.7f, 4.0f };    // Camera position
