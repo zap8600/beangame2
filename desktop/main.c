@@ -24,7 +24,7 @@
 
 LocalBean bean = { 0 };
 
-#define MAX_INPUT_CHARS 46
+#define MAX_INPUT_CHARS 17
 
 typedef enum GameScreen { TITLE, GAMEPLAY } GameScreen;
 
@@ -45,8 +45,8 @@ int main(int argc, char *argv[])
 
     InitWindow(screenWidth, screenHeight, "Bean Game");
 
-    char serverIp[MAX_INPUT_CHARS + 1] = "\0";
-    int letterCount = 0;
+    char serverIp[MAX_INPUT_CHARS + 1] = "172.233.208.111\0";
+    int letterCount = 15;
     
     Rectangle textBox = { screenWidth/2.0f - 100, 180, 225, 50 };
     bool mouseOnText = false;
@@ -240,12 +240,15 @@ int main(int argc, char *argv[])
 
             switch(currentScreen) {
                 case TITLE: {
-                    DrawText("BEAN GAME", 20, 20, 40, BLACK);
-                    if(IsGamepadAvailable(0)) {
-                        DrawText("PRESS LEFT THUMB for MAIN SERVER, RIGHT THUMB for LOCAL SERVER", 120, 220, 20, BLACK);
-                    } else {
-                        DrawText("PRESS 1 for MAIN SERVER, 2 for LOCAL SERVER", 120, 220, 20, BLACK);
-                    }
+                    DrawText("Server IP:", 240, 140, 20, GRAY);
+
+                    DrawRectangleRec(textBox, LIGHTGRAY);
+                    if (mouseOnText) DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, RED);
+                    else DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, DARKGRAY);
+
+                    DrawText(serverIp, (int)textBox.x + 5, (int)textBox.y + 8, 40, MAROON);
+
+                    DrawText("Press ENTER to Continue", 315, 250, 20, DARKGRAY);
                 }
                 case GAMEPLAY:
                 {
