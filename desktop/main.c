@@ -24,7 +24,7 @@
 
 LocalBean bean = { 0 };
 
-const char *serverIp = "172.233.208.111";
+#define MAX_INPUT_CHARS 46
 
 typedef enum GameScreen { TITLE, GAMEPLAY } GameScreen;
 
@@ -44,6 +44,14 @@ int main(int argc, char *argv[])
     const int screenHeight = 450;
 
     InitWindow(screenWidth, screenHeight, "Bean Game");
+
+    char serverIp[MAX_INPUT_CHARS + 1] = "\0";
+    int letterCount = 0;
+    
+    Rectangle textBox = { screenWidth/2.0f - 100, 180, 225, 50 };
+    bool mouseOnText = false;
+
+    int framesCounter = 0;
 
     // Define the camera to look into our 3d world (position, target, up vector)
     //bean.transform.translation = (Vector3){ 0.0f, 1.7f, 4.0f };    // Camera position
@@ -110,25 +118,33 @@ int main(int argc, char *argv[])
         switch(currentScreen) {
             case TITLE:
             {
-                if(IsGamepadAvailable(0)) {
-                    if(IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_THUMB)) {
-                        currentScreen = GAMEPLAY;
+                if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
+                else mouseOnText = false;
+
+                if(mouseOnText) {
+                    SetMouseCursor(MOUSE_CURSOR_IBEAM);
+
+                    int key = GetCharPressed();
+
+                    while(key > 0) {
+                        if((key >= 32) && (key <= 125) && (letterCount < MAX_INPUT_CHARS)) {
+                            serverIp[letterCount] = (char)key;
+                            serverIp[letterCount + 1] = '\0';
+                            letterCount++;
+                        }
+                        key = GetCharPressed();
                     }
 
-                    if(IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_THUMB)) {
-                        serverIp = "127.0.0.1";
-                        currentScreen = GAMEPLAY;
+                    if(IsKeyPressed(KEY_BACKSPACE)) {
+                        letterCount--;
+                        if(letterCount < 0) letterCount = 0;
+                        serverIp[letterCount] = '\0';
                     }
-                } else {
-                    if(IsKeyPressed(KEY_ONE)) {
-                        currentScreen = GAMEPLAY;
-                    }
+                } else SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 
-                    if(IsKeyPressed(KEY_TWO)) {
-                        serverIp = "127.0.0.1";
-                        currentScreen = GAMEPLAY;
-                    }
-                }
+                if(mouseOnText) framesCounter++;
+                else framesCounter = 0;
+                
                 break;
             }
             case GAMEPLAY:
