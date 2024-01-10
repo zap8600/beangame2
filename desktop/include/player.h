@@ -27,3 +27,4 @@ Vector3 GetBeanRight(LocalBean* bean);
 void BeanYaw(LocalBean* bean, float angle, bool rotateAroundTarget);
 void BeanPitch(LocalBean* bean, float angle, bool lockView, bool rotateAroundTarget, bool rotateUp);
 void UpdateLocalBean(LocalBean* bean);
+void HandleCollision();

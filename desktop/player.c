@@ -173,8 +173,11 @@ void UpdateLocalBean(LocalBean* bean) {
     }
 
     bean->beanCollide = (BoundingBox){
-                        (Vector3){bean->transform.translation.x - 0.7f, bean->transform.translation.y - 1.7f, bean->transform.translation.z - 0.7f},
-                        (Vector3){bean->transform.translation.x + 0.7f, bean->transform.translation.y + 0.9f, bean->transform.translation.z + 0.7f}};
+        (Vector3){bean->transform.translation.x - 0.7f, bean->transform.translation.y - 1.7f, bean->transform.translation.z - 0.7f},
+        (Vector3){bean->transform.translation.x + 0.7f, bean->transform.translation.y + 0.9f, bean->transform.translation.z + 0.7f}};
+
+    HandleCollision();
+
     bean->topCap = (Vector3){bean->transform.translation.x, bean->transform.translation.y + 0.2f, bean->transform.translation.z};
     bean->botCap = (Vector3){bean->transform.translation.x, bean->transform.translation.y - 1.0f, bean->transform.translation.z};
 

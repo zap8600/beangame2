@@ -20,3 +20,4 @@ bool GetPlayerR(int id, unsigned char* r);
 bool GetPlayerG(int id, unsigned char* g);
 bool GetPlayerB(int id, unsigned char* b);
 bool GetPlayerA(int id, unsigned char* a);
+bool IsPlayerReal(int id);

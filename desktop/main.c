@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     char serverIp[MAX_INPUT_CHARS + 1] = "172.233.208.111\0";
     int letterCount = 15;
     
-    Rectangle textBox = { screenWidth/2.0f - 100, 180, 225, 50 };
+    Rectangle textBox = { screenWidth/2.0f - 100, 180, 250, 50 };
     bool mouseOnText = false;
 
     int framesCounter = 0;
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     };
     */
 
-    DisableCursor();                    // Limit cursor to relative movement inside the window
+    //DisableCursor();                    // Limit cursor to relative movement inside the window
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
 
@@ -209,6 +209,7 @@ int main(int argc, char *argv[])
                 }
                     
                 if(!start) {
+                    DisableCursor();
                     Connect(serverIp);
                     start = true;
                 }
@@ -236,6 +237,7 @@ int main(int argc, char *argv[])
             DisableCursor();
         }
 
+
         //UpdateLocalBean(&bean);
 
         //----------------------------------------------------------------------------------
@@ -254,9 +256,10 @@ int main(int argc, char *argv[])
                     if (mouseOnText) DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, RED);
                     else DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, DARKGRAY);
 
-                    DrawText(serverIp, (int)textBox.x + 5, (int)textBox.y + 8, 40, MAROON);
+                    DrawText(serverIp, (int)textBox.x + 5, (int)textBox.y + 8, 35, MAROON);
 
                     DrawText("Press ENTER to Continue", 315, 250, 20, DARKGRAY);
+                    break;
                 }
                 case GAMEPLAY:
                 {
@@ -337,4 +340,38 @@ int main(int argc, char *argv[])
 void UpdateTheBigBean(Vector3 pos, Vector3 tar) {
     bean.transform.translation = pos;
     bean.target = tar;
+}
+
+bool GetPlayerBoundingBox(int id, BoundingBox* box) {
+    if(IsPlayerReal(id)) {
+        Vector3 pos = { 0 };
+        if(GetPlayerPos(id, &pos)) {
+            *box = (BoundingBox){
+                (Vector3){pos.x - 0.7f, pos.y - 1.7f, pos.z - 0.7f},
+                (Vector3){pos.x + 0.7f, pos.y + 0.9f, pos.z + 0.7f}
+            };
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
+void HandleCollision() {
+    for (int i = 0; i < MAX_PLAYERS; i++) {
+        if(i != GetLocalPlayerId()) {
+            BoundingBox box = { 0 };
+            if(GetPlayerBoundingBox(i, &box)) {
+                if(CheckCollisionBoxes(bean.beanCollide, box)) {
+                    bean.transform.translation = Vector3Subtract(bean.transform.translation, bean.posAdd);
+                    bean.target = Vector3Subtract(bean.target, bean.posAdd);
+                    bean.beanCollide = (BoundingBox){
+                        (Vector3){bean.transform.translation.x - 0.7f, bean.transform.translation.y - 1.7f, bean.transform.translation.z - 0.7f},
+                        (Vector3){bean.transform.translation.x + 0.7f, bean.transform.translation.y + 0.9f, bean.transform.translation.z + 0.7f}};
+                    UpdateCameraWithBean(&bean);
+                    return;
+                }
+            }
+        }
+    }
 }
