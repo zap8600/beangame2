@@ -48,6 +48,8 @@ void BeanMoveForward(LocalBean* bean, float distance, bool moveInWorldPlane) {
     // Scale by distance
     forward = Vector3Scale(forward, distance);
 
+    bean->posAdd = Vector3Add(bean->posAdd, forward);
+
     bean->transform.translation = Vector3Add(bean->transform.translation, forward);
     bean->target = Vector3Add(bean->target, forward);
     UpdateCameraWithBean(bean);
@@ -66,6 +68,8 @@ void BeanMoveRight(LocalBean* bean, float distance, bool moveInWorldPlane)
 
     // Scale by distance
     right = Vector3Scale(right, distance);
+
+    bean->posAdd = Vector3Add(bean->posAdd, right);
 
     // Move position and target
     bean->transform.translation = Vector3Add(bean->transform.translation, right);
@@ -141,6 +145,8 @@ void UpdateLocalBean(LocalBean* bean) {
     bool rotateAroundTarget = ((bean->cameraMode == CAMERA_THIRD_PERSON) || (bean->cameraMode == CAMERA_ORBITAL));
     bool lockView = ((bean->cameraMode == CAMERA_FREE) || (bean->cameraMode == CAMERA_FIRST_PERSON) || (bean->cameraMode == CAMERA_THIRD_PERSON) || (bean->cameraMode == CAMERA_ORBITAL));
     bool rotateUp = false;
+
+    bean->posAdd = Vector3Zero();
 
     if(IsKeyDown(KEY_DOWN)) BeanPitch(bean, -CAMERA_ROTATION, lockView, rotateAroundTarget, rotateUp);
     if(IsKeyDown(KEY_UP)) BeanPitch(bean, CAMERA_ROTATION, lockView, rotateAroundTarget, rotateUp);

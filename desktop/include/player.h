@@ -8,6 +8,7 @@ typedef struct LocalBean {
     Transform transform; // player position, rotation, and scale
     Vector3 target; // player target
     Vector3 up; // player up? used for rolling i think
+    Vector3 posAdd;
     BoundingBox beanCollide;
     Color beanColor; // player color
     Vector3 topCap; // start cap for capsule
