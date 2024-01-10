@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
 
     bool connected = false;
     bool client = false;
+    bool start = false;
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -144,6 +145,10 @@ int main(int argc, char *argv[])
 
                 if(mouseOnText) framesCounter++;
                 else framesCounter = 0;
+
+                if(IsKeyPressed(KEY_ENTER)) {
+                    currentScreen = GAMEPLAY;
+                }
                 
                 break;
             }
@@ -203,7 +208,10 @@ int main(int argc, char *argv[])
                     bean.beanColor = (Color){ (GetRandomValue(0, 255)), (GetRandomValue(0, 255)), (GetRandomValue(0, 255)), (GetRandomValue(0, 255)) };
                 }
                     
-                Connect(serverIp); // bean game server dont ddos pls
+                if(!start) {
+                    Connect(serverIp);
+                    start = true;
+                }
 
                 if (Connected()) {
                     connected = true;
@@ -309,6 +317,7 @@ int main(int argc, char *argv[])
                         DrawText("- Camera mode keys: 1, 2", 15, 60, 10, BLACK);
                         DrawText("- Generate a new color: 3", 15, 75, 10, BLACK);
                     }
+                    break;
                 }
             }
 
